@@ -44,3 +44,7 @@ Distributed under the MIT License. See [LICENSE](https://github.com/minimal-ui-k
 ## Contact us
 
 Email: support@minimals.cc
+
+
+client id: 750012432993-15isujarbnadfoh5chni353dpjqebs06.apps.googleusercontent.com
+client secret: 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

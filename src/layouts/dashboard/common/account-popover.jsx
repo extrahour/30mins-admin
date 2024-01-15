@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 import { account } from 'src/_mock/account';
+import {supabase} from "../../../supabaseClient";
 
 // ----------------------------------------------------------------------
 
@@ -105,7 +106,7 @@ export default function AccountPopover() {
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={() => supabase.auth.signOut()}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
           Logout

@@ -1,0 +1,22 @@
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div>
+          <Auth
+            supabaseClient={supabase}
+            appearance={{ theme: ThemeSupa }}
+            providers={["google"]}
+            showLinks={false}
+          />
+          {searchParams.has("error_description") && (
+            <ErrorAlert text={searchParams.get("error_description")} />
+          )}
+        </div>
+
+      </div>
