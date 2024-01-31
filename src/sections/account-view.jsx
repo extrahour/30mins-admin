@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react'
-import { supabase } from './supabaseClient'
+import {useState, useEffect, useContext} from 'react'
+import { supabase } from '../supabaseClient'
+import {SessionContext} from "../app";
 
-export default function Account({ session }) {
+export default function AccountView() {
+  const session = useContext(SessionContext);
+
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState(null)
   const [website, setWebsite] = useState(null)
@@ -12,6 +15,7 @@ export default function Account({ session }) {
     async function getProfile() {
       setLoading(true)
       const { user } = session
+      // console.log('user', user);
 
       const { data, error } = await supabase
         .from('profiles')

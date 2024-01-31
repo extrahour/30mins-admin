@@ -22,6 +22,11 @@ const navConfig = [
     path: '/user',
     icon: icon('ic_lock'),
   },
+  {
+    title: 'account',
+    path: '/account',
+    icon: icon('ic_user'),
+  }
 ];
 
 export default navConfig;

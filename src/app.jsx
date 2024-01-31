@@ -2,10 +2,11 @@ import 'src/global.css';
 import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 import Router from 'src/routes/sections';
 import ThemeProvider from 'src/theme';
-import {useEffect, useState} from "react";
+import {createContext, useEffect, useState} from "react";
 import {supabase} from "./supabaseClient";
 import LoginPage from "./pages/login";
 
+export const SessionContext = createContext();
 
 export default function App() {
   useScrollToTop();
@@ -32,7 +33,9 @@ export default function App() {
     return (
       <div>
         <ThemeProvider>
-          <Router />
+          <SessionContext.Provider value={session}>
+            <Router />
+          </SessionContext.Provider>
         </ThemeProvider>
       </div>
     );

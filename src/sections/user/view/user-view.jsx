@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useContext, useEffect, useState} from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -10,8 +10,6 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { users } from 'src/_mock/user';
-
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
@@ -21,21 +19,59 @@ import UserTableHead from '../user-table-head';
 import TableEmptyRows from '../table-empty-rows';
 import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
+import {SessionContext} from "../../../app";
+import {supabase} from "../../../supabaseClient";
 
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
   const [page, setPage] = useState(0);
-
-  const [order, setOrder] = useState('asc');
-
+  const [order, setOrder] = useState('desc');
   const [selected, setSelected] = useState([]);
-
-  const [orderBy, setOrderBy] = useState('name');
-
+  const [orderBy, setOrderBy] = useState('date');
   const [filterName, setFilterName] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [loading, setLoading] = useState(true)
+  const [bookings, setBookings] = useState([])
 
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const session = useContext(SessionContext);
+
+  useEffect(() => {
+    let ignore = false
+    async function getBookings() {
+      setLoading(true)
+      // const { user } = session
+
+      const { data, error } = await supabase
+        .from('bookings')
+        .select('*, salon_services (title, price)')
+      // console.log('bookings', data);
+
+      if (!ignore) {
+        if (error) {
+          console.warn(error)
+        } else if (data) {
+          const flatBookings = data.map(x => ({
+            id: x.id,
+            name: x.name,
+            date: `${x.date} ${x.startTime} - ${x.endTime}`,
+            serviceName: x.salon_services.title,
+            price: x.salon_services.price,
+            status: x.status,
+            orderUuid: x.uuid,
+          }))
+          setBookings(flatBookings);
+        }
+      }
+
+      setLoading(false)
+    }
+    getBookings()
+
+    return () => {
+      ignore = true
+    }
+  }, [session])
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -46,12 +82,12 @@ export default function UserPage() {
   };
 
   const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
+    // if (event.target.checked) {
+    //   const newSelecteds = users.map((n) => n.name);
+    //   setSelected(newSelecteds);
+    //   return;
+    // }
+    // setSelected([]);
   };
 
   const handleClick = (event, name) => {
@@ -87,7 +123,7 @@ export default function UserPage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: users,
+    inputData: bookings,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -97,19 +133,15 @@ export default function UserPage() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Users</Typography>
-
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
-          New User
-        </Button>
+        <Typography variant="h4">Bookings</Typography>
       </Stack>
 
       <Card>
-        <UserTableToolbar
-          numSelected={selected.length}
-          filterName={filterName}
-          onFilterName={handleFilterByName}
-        />
+        {/*<UserTableToolbar*/}
+        {/*  numSelected={selected.length}*/}
+        {/*  filterName={filterName}*/}
+        {/*  onFilterName={handleFilterByName}*/}
+        {/*/>*/}
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
@@ -117,15 +149,15 @@ export default function UserPage() {
               <UserTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={users.length}
+                rowCount={bookings.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
+                  { id: 'date', label: 'Date' },
+                  { id: 'serviceName', label: 'Service' },
+                  { id: 'price', label: 'Price' },
                   { id: 'status', label: 'Status' },
                   { id: '' },
                 ]}
@@ -137,19 +169,18 @@ export default function UserPage() {
                     <UserTableRow
                       key={row.id}
                       name={row.name}
-                      role={row.role}
+                      date={row.date}
+                      serviceName={row.serviceName}
+                      price={row.price}
                       status={row.status}
-                      company={row.company}
-                      avatarUrl={row.avatarUrl}
-                      isVerified={row.isVerified}
-                      selected={selected.indexOf(row.name) !== -1}
+                      orderUuid={row.orderUuid}
                       handleClick={(event) => handleClick(event, row.name)}
                     />
                   ))}
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, users.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, bookings.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -161,7 +192,7 @@ export default function UserPage() {
         <TablePagination
           page={page}
           component="div"
-          count={users.length}
+          count={bookings.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
