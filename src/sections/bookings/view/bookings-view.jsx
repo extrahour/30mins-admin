@@ -14,10 +14,10 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from '../table-no-data';
-import UserTableRow from '../user-table-row';
-import UserTableHead from '../user-table-head';
+import BookingsTableRow from '../bookings-table-row';
+import BookingsTableHead from '../bookings-table-head';
 import TableEmptyRows from '../table-empty-rows';
-import UserTableToolbar from '../user-table-toolbar';
+import BookingsTableToolbar from '../bookings-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 import {SessionContext} from "../../../app";
 import {supabase} from "../../../supabaseClient";
@@ -137,7 +137,7 @@ export default function UserPage() {
       </Stack>
 
       <Card>
-        {/*<UserTableToolbar*/}
+        {/*<BookingsTableToolbar*/}
         {/*  numSelected={selected.length}*/}
         {/*  filterName={filterName}*/}
         {/*  onFilterName={handleFilterByName}*/}
@@ -146,7 +146,7 @@ export default function UserPage() {
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
-              <UserTableHead
+              <BookingsTableHead
                 order={order}
                 orderBy={orderBy}
                 rowCount={bookings.length}
@@ -166,7 +166,7 @@ export default function UserPage() {
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
-                    <UserTableRow
+                    <BookingsTableRow
                       key={row.id}
                       name={row.name}
                       date={row.date}

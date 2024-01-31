@@ -8,7 +8,7 @@ import {statusToColor} from "../../helpers/booking-status";
 
 // ----------------------------------------------------------------------
 
-export default function UserTableRow({
+export default function BookingsTableRow({
   name,
   date,
   status,
@@ -54,7 +54,7 @@ export default function UserTableRow({
   );
 }
 
-UserTableRow.propTypes = {
+BookingsTableRow.propTypes = {
   avatarUrl: PropTypes.any,
   company: PropTypes.any,
   handleClick: PropTypes.func,

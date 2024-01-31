@@ -9,7 +9,7 @@ const icon = (name) => (
 const navConfig = [
   {
     title: 'bookings',
-    path: '/products',
+    path: '/bookings',
     icon: icon('ic_cart'),
   },
   {
