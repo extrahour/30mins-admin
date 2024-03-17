@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const visuallyHidden = {
   border: 0,
   margin: -1,
@@ -35,7 +37,7 @@ export function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export function applyFilter({ inputData, comparator, filterName }) {
+export function applyFilter({ inputData, comparator, filterName, bookingDateFilter }) {
   const stabilizedThis = inputData.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -50,6 +52,19 @@ export function applyFilter({ inputData, comparator, filterName }) {
     inputData = inputData.filter(
       (user) => user.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );
+  }
+
+  if (bookingDateFilter) {
+    const today = moment().startOf('day');
+    if (bookingDateFilter === 'upcoming') {
+      inputData = inputData.filter(
+        x => x.startTimeMoment.isAfter(today)
+      );
+    } else if (bookingDateFilter === 'past') {
+      inputData = inputData.filter(
+        x => x.startTimeMoment.isBefore(today)
+      );
+    }
   }
 
   return inputData;

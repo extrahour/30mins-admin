@@ -21,18 +21,20 @@ import BookingsTableToolbar from '../bookings-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 import {SessionContext} from "../../../app";
 import {supabase} from "../../../supabaseClient";
+import moment from "moment";
 
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
   const [page, setPage] = useState(0);
-  const [order, setOrder] = useState('desc');
+  const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('date');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [loading, setLoading] = useState(true)
-  const [bookings, setBookings] = useState([])
+  const [loading, setLoading] = useState(true);
+  const [bookings, setBookings] = useState([]);
+  const [bookingDateFilter, setBookingDateFilter] = useState('upcoming');
 
   const session = useContext(SessionContext);
 
@@ -55,6 +57,7 @@ export default function UserPage() {
             id: x.id,
             name: x.name,
             date: `${x.date} ${x.startTime} - ${x.endTime}`,
+            startTimeMoment: moment(`${x.date} ${x.startTime}`, 'YYYY-MM-DD, hh:mm'),
             serviceName: x.salon_services.title,
             price: x.salon_services.price,
             status: x.status,
@@ -126,6 +129,7 @@ export default function UserPage() {
     inputData: bookings,
     comparator: getComparator(order, orderBy),
     filterName,
+    bookingDateFilter
   });
 
   const notFound = !dataFiltered.length && !!filterName;
@@ -137,11 +141,13 @@ export default function UserPage() {
       </Stack>
 
       <Card>
-        {/*<BookingsTableToolbar*/}
-        {/*  numSelected={selected.length}*/}
-        {/*  filterName={filterName}*/}
-        {/*  onFilterName={handleFilterByName}*/}
-        {/*/>*/}
+        <BookingsTableToolbar
+          numSelected={selected.length}
+          filterName={filterName}
+          onFilterName={handleFilterByName}
+          onBookingDateFilterChange={(event) => setBookingDateFilter(event.target.value)}
+          bookingDateFilter={bookingDateFilter}
+        />
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
@@ -178,10 +184,10 @@ export default function UserPage() {
                     />
                   ))}
 
-                <TableEmptyRows
-                  height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, bookings.length)}
-                />
+                {/*<TableEmptyRows*/}
+                {/*  height={77}*/}
+                {/*  emptyRows={emptyRows(page, rowsPerPage, bookings.length)}*/}
+                {/*/>*/}
 
                 {notFound && <TableNoData query={filterName} />}
               </TableBody>
