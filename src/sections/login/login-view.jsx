@@ -11,7 +11,7 @@ import {useSearchParams} from "react-router-dom";
 import {Auth} from "@supabase/auth-ui-react";
 import {ThemeSupa} from "@supabase/auth-ui-shared";
 import ErrorAlert from "../../components/error-alert";
-const publicSiteUrl = import.meta.env.PUBLIC_SITE_URL
+const publicSiteUrl = import.meta.env.VITE_PUBLIC_SITE_URL
 
 import "./styles.css";
 
