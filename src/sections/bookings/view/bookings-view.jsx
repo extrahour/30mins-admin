@@ -198,7 +198,7 @@ export default function UserPage() {
         <TablePagination
           page={page}
           component="div"
-          count={bookings.length}
+          count={dataFiltered.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
