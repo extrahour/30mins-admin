@@ -12,21 +12,21 @@ const navConfig = [
     path: '/bookings',
     icon: icon('ic_cart'),
   },
-  {
-    title: 'services',
-    path: '/blog',
-    icon: icon('ic_blog'),
-  },
-  {
-    title: 'settings',
-    path: '/user',
-    icon: icon('ic_lock'),
-  },
-  {
-    title: 'account',
-    path: '/account',
-    icon: icon('ic_user'),
-  }
+  // {
+  //   title: 'services',
+  //   path: '/blog',
+  //   icon: icon('ic_blog'),
+  // },
+  // {
+  //   title: 'settings',
+  //   path: '/user',
+  //   icon: icon('ic_lock'),
+  // },
+  // {
+  //   title: 'account',
+  //   path: '/account',
+  //   icon: icon('ic_user'),
+  // }
 ];
 
 export default navConfig;

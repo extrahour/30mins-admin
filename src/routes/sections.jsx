@@ -24,7 +24,8 @@ export default function Router() {
         </DashboardLayout>
       ),
       children: [
-        { element: <IndexPage />, index: true },
+        // { element: <IndexPage />, index: true },
+        { element: <BookingsPage />, index: true },
         { path: 'bookings', element: <BookingsPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
