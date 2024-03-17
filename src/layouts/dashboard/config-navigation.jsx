@@ -12,6 +12,7 @@ const navConfig = [
     path: '/bookings',
     icon: icon('ic_cart'),
   },
+
   // {
   //   title: 'services',
   //   path: '/blog',
