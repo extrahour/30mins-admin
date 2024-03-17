@@ -11,6 +11,7 @@ import {useSearchParams} from "react-router-dom";
 import {Auth} from "@supabase/auth-ui-react";
 import {ThemeSupa} from "@supabase/auth-ui-shared";
 import ErrorAlert from "../../components/error-alert";
+const publicSiteUrl = import.meta.env.PUBLIC_SITE_URL
 
 import "./styles.css";
 
@@ -47,6 +48,7 @@ export default function LoginView() {
             appearance={{ theme: ThemeSupa }}
             providers={["google"]}
             showLinks={false}
+            redirectTo={publicSiteUrl}
           />
           {searchParams.has("error_description") && (
             <ErrorAlert text={searchParams.get("error_description")} />
