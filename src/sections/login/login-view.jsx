@@ -13,6 +13,7 @@ import {ThemeSupa} from "@supabase/auth-ui-shared";
 import ErrorAlert from "../../components/error-alert";
 const publicSiteUrl = import.meta.env.VITE_PUBLIC_SITE_URL
 
+
 import "./styles.css";
 
 export default function LoginView() {
