@@ -53,16 +53,19 @@ export default function UserPage() {
         if (error) {
           console.warn(error)
         } else if (data) {
-          const flatBookings = data.map(x => ({
-            id: x.id,
-            name: x.name,
-            date: `${x.date} ${x.startTime} - ${x.endTime}`,
-            startTimeMoment: moment(`${x.date} ${x.startTime}`, 'YYYY-MM-DD, hh:mm'),
-            serviceName: x.salon_services.title,
-            price: x.salon_services.price,
-            status: x.status,
-            orderUuid: x.uuid,
-          }))
+          const flatBookings = data.map(x => {
+            const startTime = x.displayStartTime || x.startTime;
+            return {
+              id: x.id,
+              name: x.name,
+              date: `${x.date} ${startTime} - ${x.endTime}`,
+              startTimeMoment: moment(`${x.date} ${startTime}`, 'YYYY-MM-DD, hh:mm'),
+              serviceName: x.salon_services.title,
+              price: x.salon_services.price,
+              status: x.status,
+              orderUuid: x.uuid,
+            }
+          })
           setBookings(flatBookings);
         }
       }
